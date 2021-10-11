@@ -1,6 +1,6 @@
 # https://github.com/sourabhv/FlapPyBird/blob/master/flappy.py
-from busca_em_largura import mount_tree
-
+from models.interface import get_action
+from utils.colision import is_coliding
 import pygame
 from random import randint
 from pygame.locals import *
@@ -99,7 +99,7 @@ def run():
     base_time = pygame.time.get_ticks()
 
     while True:
-        colisao()
+        if is_coliding(PLAYER[0], get_state()): end_game()
 
         if pygame.time.get_ticks() - base_time >= 50:
             base_time = pygame.time.get_ticks()
@@ -131,7 +131,7 @@ def run():
 
             state = get_state()
             print(f'Score: {SCORE}: State: {state}')
-            action = mount_tree(PLAYER[0], state)
+            action = get_action({'player': PLAYER[0], 'state': state}, model='heuristica')
 
             if action == 'FLIP':
                 PLAYER[0] = flip()
@@ -232,28 +232,6 @@ def fase1():
         [peao_right, -7985],
         [peao_left, -8525]
     ]
-
-
-def colisao():
-    for i in range(len(torres)):
-        if PLAYER[1] - torres[i][1] == 0:
-            if abs(PLAYER[0] - torres[i][0]) == 9:
-                end_game()
-
-    for i in range(len(bispos)):
-        if PLAYER[1] - bispos[i][1] == 270:
-            if abs(PLAYER[0] - bispos[i][0]) == 252:
-                end_game()
-
-    for i in range(len(cavalos)):
-        if PLAYER[1] - cavalos[i][1] == 90:
-            if abs(PLAYER[0] - cavalos[i][0]) == 168:
-                end_game()
-
-    for i in range(len(peoes)):
-        if PLAYER[1] - peoes[i][1] == 90:
-            if PLAYER[0] - peoes[i][0] == 75 or PLAYER[0] - peoes[i][0] == -89:
-                end_game()
 
 
 def flip():

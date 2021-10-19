@@ -13,7 +13,7 @@ SCREENHEIGHT = 720
 SCORE = 0
 TABY = 0
 FPS = 30
-
+ACTIONS = []
 PLAYER = [644, 655]
 
 IMAGES, SOUNDS, HITMASKS = {}, {}, {}
@@ -94,6 +94,7 @@ def reset_background():
 def run():
     global TABY
     global SCORE
+    global ACTIONS
 
     flag = True
     base_time = pygame.time.get_ticks()
@@ -101,7 +102,7 @@ def run():
     while True:
         if is_coliding(PLAYER[0], get_state()): end_game()
 
-        if pygame.time.get_ticks() - base_time >= 50:
+        if pygame.time.get_ticks() - base_time >= 60:
             base_time = pygame.time.get_ticks()
             SCORE += 5
             if flag:
@@ -129,10 +130,13 @@ def run():
             if cavalos and cavalos[0][1] >= 800:
                 cavalos.pop(0)
 
-            state = get_state()
-            print(f'Score: {SCORE}: State: {state}')
-            action = get_action({'player': PLAYER[0], 'state': state}, model='heuristica')
-
+            # action = get_action({'player': PLAYER[0], 'state': state}, model='heuristica')
+            if not ACTIONS:
+                state = get_state()
+                print(f'Score: {SCORE}: State: {state}')
+                ACTIONS = get_action({'player': PLAYER[0], 'state': state}, model='bfs')[1]
+            action = ACTIONS.pop(0)
+            print(action)
             if action == 'FLIP':
                 PLAYER[0] = flip()
                 SCORE -= 5
@@ -246,41 +250,37 @@ def get_state():
     cavs = []
 
     for i in range(len(torres)):
-        if 0 <= torres[i][1] <= 700:
-            tor.append(torres[i].copy())
-        elif torres[i][1] <= 0:
-            break
+        if torres[i][1] >= 755:
+            continue
+        tor.append(torres[i].copy())
 
     for i in range(len(peoes)):
-        if 0 <= peoes[i][1] <= 700:
-            pes.append(peoes[i].copy())
-        elif peoes[i][1] <= 0:
-            break
+        if peoes[i][1] >= 755:
+            continue
+        pes.append(peoes[i].copy())
 
     for i in range(len(bispos)):
-        if 0 <= bispos[i][1] <= 700:
-            bis.append(bispos[i].copy())
-        elif bispos[i][1] <= 0:
-            break
+        if bispos[i][1] >= 755:
+            continue
+        bis.append(bispos[i].copy())
 
     for i in range(len(cavalos)):
-        if 0 <= cavalos[i][1] <= 700:
-            cavs.append(cavalos[i].copy())
-        elif cavalos[i][1] <= 0:
-            break
+        if cavalos[i][1] >= 755:
+            continue
+        cavs.append(cavalos[i].copy())
 
     state['torres'] = tor
     state['peoes'] = pes
     state['bispos'] = bis
     state['cavalos'] = cavs
-    print(state)
+
     return state
 
 
 def end_game():
     global SCORE
     SCORE -= 20
-    print(SCORE)
+    # print(SCORE)
     pygame.quit()
     sys.exit()
 

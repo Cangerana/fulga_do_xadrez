@@ -16,7 +16,6 @@ def evaluation(player, state, action):
     if action == 'FLIP':
         player = flip(player)
         score -= 5
-
     
     score -= 20 if is_coliding(player, state) else 0
     return score

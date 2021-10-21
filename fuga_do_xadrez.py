@@ -102,7 +102,7 @@ def run():
     while True:
         if is_coliding(PLAYER[0], get_state()): end_game()
 
-        if pygame.time.get_ticks() - base_time >= 60:
+        if pygame.time.get_ticks() - base_time >= 400:
             base_time = pygame.time.get_ticks()
             SCORE += 5
             if flag:
@@ -133,25 +133,23 @@ def run():
             # action = get_action({'player': PLAYER[0], 'state': state}, model='heuristica')
             if not ACTIONS:
                 state = get_state()
-                print(f'Score: {SCORE}: State: {state}')
-                ACTIONS = get_action({'player': PLAYER[0], 'state': state}, model='bfs')[1]
+                ACTIONS = get_action({'player': PLAYER[0], 'state': state}, model='bfs')
+
             action = ACTIONS.pop(0)
-            print(action)
             if action == 'FLIP':
                 PLAYER[0] = flip()
                 SCORE -= 5
-
+            
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 pygame.quit()
                 sys.exit()
             # if event.type == KEYDOWN:
-            #     if event.key == K_LEFT or event.key == K_a:
-            #         PLAYER[0] = 560
-            #     elif event.key == K_RIGHT or event.key == K_d:
-            #         PLAYER[0] = 644
-            #     SCORE -= 5
-
+                # if event.key == K_LEFT or event.key == K_a:
+                #     PLAYER[0] = 560
+                # elif event.key == K_RIGHT or event.key == K_d:
+                #     PLAYER[0] = 644
+                # SCORE -= 5
         reset_background()
         pygame.display.update()
         FPSCLOCK.tick(FPS)
@@ -280,7 +278,7 @@ def get_state():
 def end_game():
     global SCORE
     SCORE -= 20
-    # print(SCORE)
+    print(SCORE)
     pygame.quit()
     sys.exit()
 

@@ -1,23 +1,21 @@
-def is_coliding(player, state, steps=1):
+def is_coliding(player, state, steps=0):
     for piece, pos in state.items():
-        if not pos: continue
-
+        y = 655 - (90 * steps)
         for posi in pos:
-            y_posi = posi[1] + (90 * steps)
-            if piece == 'torres':
-                if 655 - y_posi == 0:
-                    if abs(player - posi[0]) == 9:
+            y_distance = y - posi[1]
+
+            if y_distance <= 270:
+                x_distance = player - posi[0]
+
+                if y_distance == 270 and piece == 'bispos' and abs(x_distance) == 252:
                         return True
-            if piece == 'bispos':
-                if 655 - y_posi == 270:
-                    if abs(player - posi[0]) == 252:
+                elif y_distance == 90:
+                    if piece == 'cavalos' and abs(x_distance) == 168:
                         return True
-            if piece == 'cavalos':
-                if 655 - y_posi == 90:
-                    if abs(player - posi[0]) == 168:
+                    elif piece == 'peoes' and (x_distance == 75 or x_distance == -89):
                         return True
-            if piece == 'peoes':
-                if 655 - y_posi == 90:
-                    if player - posi[0] == 75 or player - posi[0] == -89:
+                elif y_distance == 0 and piece == 'torres' and abs(x_distance) == 9:
                         return True
+            else:
+                break
     return False

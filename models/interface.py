@@ -1,5 +1,6 @@
 from models.heuristica import decision
 from models.bfs import breadth_first_search
+from models.dfs import depthFirstSearch
 from utils.moves import flip
 from utils.colision import is_coliding
 
@@ -12,13 +13,14 @@ def get_action(state, model='heuristica'):
         action = decision(state)
 
     elif model == 'bfs':
-        s = datetime.now()
         player = [state['player'], 0]
         paths = breadth_first_search(player, goal=-90*20, game_state=state['state'])
         return paths
 
-    elif model == 'busca_em_largura':
-        pass
+    elif model == 'dfs':
+        player = [state['player'], 0]
+        paths = depthFirstSearch(player, goal=-90*20, game_state=state['state'])
+        return paths
 
     elif model == 'genetico_1':
         pass

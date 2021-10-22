@@ -102,7 +102,7 @@ def run():
     while True:
         if is_coliding(PLAYER[0], get_state()): end_game()
 
-        if pygame.time.get_ticks() - base_time >= 400:
+        if pygame.time.get_ticks() - base_time >= 500:
             base_time = pygame.time.get_ticks()
             SCORE += 5
             if flag:
@@ -133,7 +133,7 @@ def run():
             # action = get_action({'player': PLAYER[0], 'state': state}, model='heuristica')
             if not ACTIONS:
                 state = get_state()
-                ACTIONS = get_action({'player': PLAYER[0], 'state': state}, model='bfs')
+                ACTIONS = get_action({'player': PLAYER[0], 'state': state}, model='dfs')
 
             action = ACTIONS.pop(0)
             if action == 'FLIP':

@@ -133,7 +133,7 @@ def run():
             # action = get_action({'player': PLAYER[0], 'state': state}, model='heuristica')
             if not ACTIONS:
                 state = get_state()
-                ACTIONS = get_action({'player': PLAYER[0], 'state': state}, model='dfs')
+                ACTIONS = get_action({'player': PLAYER[0], 'state': state}, model='GA')
 
             action = ACTIONS.pop(0)
             if action == 'FLIP':

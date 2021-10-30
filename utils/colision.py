@@ -4,7 +4,7 @@ def is_coliding(player, state, steps=0):
         for posi in pos:
             y_distance = y - posi[1]
 
-            if y_distance <= 270:
+            if abs(y_distance) <= 300:
                 x_distance = player - posi[0]
 
                 if y_distance == 270 and piece == 'bispos' and abs(x_distance) == 252:
@@ -17,5 +17,5 @@ def is_coliding(player, state, steps=0):
                 elif y_distance == 0 and piece == 'torres' and abs(x_distance) == 9:
                         return True
             else:
-                break
+                continue
     return False

@@ -14,10 +14,11 @@ def depthFirstSearch(player, goal, game_state):
 
         actions = get_actions(player, game_state)
         for action in actions:
-            position = action_to_position(player, action)
-            if position not in visited:
-                visited.append(position)
-                tree.append((position, path + [action]))
+            if action:
+                position = action_to_position(player, action)
+                if position not in visited:
+                    visited.append(position)
+                    tree.append((position, path + [action]))
 
     return path
 

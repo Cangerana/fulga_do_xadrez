@@ -12,24 +12,41 @@ from datetime import datetime
 def get_action(state, model='heuristica'):
     if model == 'heuristica':
         action = decision(state)
+        return action
 
     elif model == 'bfs':
+        sleep(3)
+        s = datetime.now()
         player = [state['player'], 0]
         paths = breadth_first_search(
-            player, goal=-90*20, game_state=state['state'])
-
+            player, goal=-90*103, game_state=state['state']
+        )
+        score = final_score(paths)
+        print(score)
+        print(datetime.now() -  s)
         return paths
 
     elif model == 'dfs':
+        sleep(1)
+        s = datetime.now()
         player = [state['player'], 0]
         paths = depthFirstSearch(
-            player, goal=-90*20, game_state=state['state'])
-
+            player, goal=-90*33, game_state=state['state']
+        )
+        score = final_score(paths)
+        print(datetime.now() -  s)
+        print(score)
+        
+        # sleep(1)
         return paths
 
     elif model == 'GA':
+        sleep(1)
+        s = datetime.now()
         paths = ga(state=state)
-        paths = list(map(lambda action: 'FLIP' if action == 1 else 'STAY', paths))
+        paths = list(
+            map(lambda action: 'FLIP' if action == 1 else 'STAY', paths))
+        print(datetime.now() -  s)
 
         return paths
 
@@ -58,6 +75,15 @@ def evaluation(actions, state):
 
         steps += 1
 
+    return score
+
+
+def final_score(actions):
+    score = 0
+    for action in actions:
+        if action == 'FLIP':
+            score -= 5
+        score += 10
     return score
 
 

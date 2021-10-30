@@ -102,9 +102,9 @@ def run():
     while True:
         if is_coliding(PLAYER[0], get_state()): end_game()
 
-        if pygame.time.get_ticks() - base_time >= 500:
+        if pygame.time.get_ticks() - base_time >= 120:
             base_time = pygame.time.get_ticks()
-            SCORE += 5
+            SCORE += 10
             if flag:
                 flag = False
                 TABY = 0
@@ -129,17 +129,20 @@ def run():
                 bispos.pop(0)
             if cavalos and cavalos[0][1] >= 800:
                 cavalos.pop(0)
-
+            
+            # state = get_state()
             # action = get_action({'player': PLAYER[0], 'state': state}, model='heuristica')
+
             if not ACTIONS:
                 state = get_state()
                 ACTIONS = get_action({'player': PLAYER[0], 'state': state}, model='GA')
+                # ACTIONS = get_action({'player': PLAYER[0], 'state': state}, model='dfs')
 
             action = ACTIONS.pop(0)
             if action == 'FLIP':
                 PLAYER[0] = flip()
                 SCORE -= 5
-            
+            print(SCORE)
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 pygame.quit()
@@ -277,7 +280,7 @@ def get_state():
 
 def end_game():
     global SCORE
-    SCORE -= 20
+    # SCORE -= 20
     print(SCORE)
     pygame.quit()
     sys.exit()
